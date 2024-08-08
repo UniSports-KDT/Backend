@@ -1,0 +1,22 @@
+package com.ac.su.admin;
+
+import com.ac.su.post.Post;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+
+import java.util.List;
+
+@Entity
+public class Admin {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name; //이름
+    private String username; //아이디
+    private String password; //비밀번호
+    private String phone; //폰 번호
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "admin")
+    private List<Post> post; //작성한 공지사항 모음
+}
