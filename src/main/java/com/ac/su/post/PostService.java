@@ -5,6 +5,8 @@ import com.ac.su.admin.AdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PostService {
 
@@ -52,5 +54,10 @@ public class PostService {
 
         // 조회된 공지사항을 삭제!.
         postRepository.delete(post);
+    }
+
+    // 전체 공지사항을 조회하는 메서드
+    public List<Post> getAllPosts() {
+        return postRepository.findAll();
     }
 }

@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -51,5 +52,12 @@ public class PostController {
         Map<String, String> response = new HashMap<>();
         response.put("message", "공지사항 삭제 완료!");
         return ResponseEntity.ok(response);
+    }
+
+    // 전체 공지사항을 조회
+    @GetMapping
+    public ResponseEntity<List<Post>> getAllAnnouncements() {
+        List<Post> posts = postService.getAllPosts();
+        return ResponseEntity.ok(posts);
     }
 }
