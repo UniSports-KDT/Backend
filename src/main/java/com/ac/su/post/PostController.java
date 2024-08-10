@@ -39,4 +39,17 @@ public class PostController {
         // 수정된 공지사항을 반환.
         return ResponseEntity.ok(updatedPost);
     }
+
+    // 공지사항 삭제
+    @DeleteMapping("/api/announcements/{announcementId}")
+    public ResponseEntity<?> deleteAnnouncement(@PathVariable Long announcementId) {
+
+        // 공지사항을 삭제!!!
+        postService.deletePost(announcementId);
+
+        // JSON 형식으로 메시지 반환
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "공지사항 삭제 완료!");
+        return ResponseEntity.ok(response);
+    }
 }

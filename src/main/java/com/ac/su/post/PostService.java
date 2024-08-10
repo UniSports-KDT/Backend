@@ -43,4 +43,14 @@ public class PostService {
         // 수정된 공지사항을 저장하고 반환.
         return postRepository.save(post);
     }
+
+    // 공지사항을 삭제하는 메서드
+    public void deletePost(Long announcementId) {
+        // 공지사항을 ID로 조회. 없으면 예외를 던진다ㅏㅏㅏ.
+        Post post = postRepository.findById(announcementId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 ID의 공지사항을 찾을 수 없습니다."));
+
+        // 조회된 공지사항을 삭제!.
+        postRepository.delete(post);
+    }
 }
