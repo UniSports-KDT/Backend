@@ -86,4 +86,39 @@ public class FacilityService {
         // 3. 최종적으로 생성된 Facility 객체를 반환
         return savedFacility;
     }
+
+    // 기존 시설을 수정하는 메서드
+    @Transactional
+    public Facility updateFacility(Long facilityId, FacilityDTO facilityDTO) {
+        // 1. 기존의 Facility 객체를 데이터베이스에서 조회
+        Facility facility = facilityRepository.findById(facilityId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 ID의 시설을 찾을 수 없습니다."));
+
+        // 2. Facility 객체의 필드들을 업데이트
+        facility.setName(facilityDTO.getName());
+        facility.setDescription(facilityDTO.getDescription());
+        facility.setLocation(facilityDTO.getLocation());
+        facility.setOperatingHours(facilityDTO.getAvailableHours());
+        facility.setFee(facilityDTO.getFee());
+        facility.setAttachmentFlag(facilityDTO.getAttachmentFlag());
+        facility.setCreatedAt(facility.getCreatedAt()); //생성 시간은 원본 값을 유지해야함!
+
+        // 3. attachmentFlag가 Y이면, 기존의 이미지들을 삭제하고 새로운 이미지를 추가
+        if (facility.getAttachmentFlag() == AttachmentFlag.Y) {
+            // 기존 이미지 삭제
+            facilityImageRepository.deleteByFacilityId(facilityId);
+            // 새로운 이미지 추가
+            if (facilityDTO.getAttachmentNames() != null && !facilityDTO.getAttachmentNames().isEmpty()) {
+                for (String imageUrl : facilityDTO.getAttachmentNames()) {
+                    FacilityImage facilityImage = new FacilityImage();
+                    facilityImage.setImageUrl(imageUrl);
+                    facilityImage.setFacility(facility);
+                    facilityImageRepository.save(facilityImage);
+                }
+            }
+        }
+
+        // 4. 수정된 Facility 객체를 저장하고 반환
+        return facilityRepository.save(facility);
+    }
 }

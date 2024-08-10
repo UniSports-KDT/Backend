@@ -51,4 +51,13 @@ public class FacilityController {
         // 3. 생성된 시설 객체를 포함한 HTTP 응답 반환
         return ResponseEntity.ok(createdFacility);
     }
+
+    // 시설 수정
+    @PutMapping("/api/facilities/{facilityId}")
+    public ResponseEntity<Facility> updateFacility(@PathVariable Long facilityId, @RequestBody FacilityDTO facilityDTO) {
+        // 서비스 클래스의 updateFacility 메서드를 호출하여 시설 정보 수정
+        Facility updatedFacility = facilityService.updateFacility(facilityId, facilityDTO);
+        // 수정된 시설 객체를 포함한 HTTP 응답 반환
+        return ResponseEntity.ok(updatedFacility);
+    }
 }

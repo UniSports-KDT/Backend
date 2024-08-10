@@ -5,4 +5,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface FacilityImageRepository extends JpaRepository<FacilityImage, Long> {
+    void deleteByFacilityId(Long facilityId);
 }
