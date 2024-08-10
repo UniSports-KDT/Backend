@@ -165,4 +165,26 @@ public class FacilityService {
         // 3. 최종적으로 생성된 Facility 객체 리스트를 반환
         return facilities;
     }
+
+    // 특정 시설 상세 조회
+    public Facility getFacilityById(Long facilityId) {
+        // 1. Facility 객체를 데이터베이스에서 조회
+        Facility facility = facilityRepository.findById(facilityId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 ID의 시설을 찾을 수 없습니다."));
+
+        // 2. attachmentFlag가 Y이면, 해당 시설의 이미지 URL 목록을 추가
+        if (facility.getAttachmentFlag() == AttachmentFlag.Y) {
+            List<String> imageUrls = facilityImageRepository.findByFacilityId(facilityId)
+                    .stream()
+                    .map(FacilityImage::getImageUrl)
+                    .toList();
+
+            facility.setImageUrls(imageUrls); // Transient 필드에 이미지 URL 목록 설정
+        }
+
+        // 3. 최종적으로 Facility 객체 반환
+        return facility;
+    }
+
+
 }

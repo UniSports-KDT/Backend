@@ -81,4 +81,11 @@ public class FacilityController {
         List<Facility> facilities = facilityService.getAllFacilities();
         return ResponseEntity.ok(facilities);
     }
+
+    // 특정 시설 상세 조회
+    @GetMapping("/api/facilities/{facilityId}")
+    public ResponseEntity<Facility> getFacilityById(@PathVariable Long facilityId) {
+        Facility facility = facilityService.getFacilityById(facilityId);
+        return ResponseEntity.ok(facility);
+    }
 }
