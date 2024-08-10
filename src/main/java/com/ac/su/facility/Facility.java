@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import java.util.List;
 import java.time.LocalDateTime;
@@ -27,6 +28,7 @@ public class Facility {
     @Enumerated(EnumType.STRING)
     private AttachmentFlag attachmentFlag; //시설 사진 여부
 
+    @CreationTimestamp
     private LocalDateTime createdAt; // 생성 날짜
     @UpdateTimestamp
     private LocalDateTime updatedAt; // 수정 날짜

@@ -2,6 +2,7 @@ package com.ac.su.facility;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -29,5 +30,25 @@ public class FacilityController {
         LocalDate localDate = LocalDate.parse(date); // 요청된 날짜를 LocalDate로 변환
         System.out.println("유저가 보낸 날짜:" + date);
         return facilityService.getAvailableTimes(facilityId, localDate); // 예약 가능한 시간대 조회
+    }
+
+    //시설 추가
+    @PostMapping("/api/facilities")
+    public ResponseEntity<Facility> createFacility(@RequestBody FacilityDTO facilityDTO) {
+
+        // 1. FacilityDTO로부터 Facility 객체 생성 및 필드 설정
+        Facility facility = new Facility();
+        facility.setName(facilityDTO.getName());
+        facility.setDescription(facilityDTO.getDescription());
+        facility.setLocation(facilityDTO.getLocation());
+        facility.setOperatingHours(facilityDTO.getAvailableHours());
+        facility.setFee(facilityDTO.getFee());
+        facility.setAttachmentFlag(facilityDTO.getAttachmentFlag());
+
+        // 2. 서비스 클래스의 createFacility 메서드를 호출하여 시설 및 이미지 데이터 저장
+        Facility createdFacility = facilityService.createFacility(facility, facilityDTO.getAttachmentNames());
+
+        // 3. 생성된 시설 객체를 포함한 HTTP 응답 반환
+        return ResponseEntity.ok(createdFacility);
     }
 }
