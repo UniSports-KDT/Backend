@@ -53,4 +53,17 @@ public class ReservationService {
 
         return reservationRepository.save(reservation); // 예약 저장
     }
+
+    // 예약 상태 변경
+    public Reservation updateReservationStatus(Long reservationId, ReservationStatus status) {
+        // 예약 조회
+        Reservation reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 ID의 예약을 찾을 수 없습니다."));
+
+        // 예약 상태 업데이트
+        reservation.setStatus(status);
+
+        // 변경된 예약 저장
+        return reservationRepository.save(reservation);
+    }
 }

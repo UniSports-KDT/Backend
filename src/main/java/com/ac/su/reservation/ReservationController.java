@@ -3,10 +3,7 @@ package com.ac.su.reservation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -17,6 +14,8 @@ import java.util.Map;
 public class ReservationController {
     @Autowired
     private ReservationService reservationService;
+    @Autowired
+    private ReservationRepository reservationRepository;
 
     // 예약 신청
     @PostMapping("/api/reservations")
@@ -39,6 +38,34 @@ public class ReservationController {
             Map<String, String> errorResponse = new HashMap<>();
             errorResponse.put("error", e.getMessage());
             return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+        }
+    }
+
+    // 예약 상태 변경(예약 승인 및 거절)
+    @PutMapping("/api/reservations/{reservationId}/status")
+    public ResponseEntity<?> updateReservationStatus(@PathVariable Long reservationId, @RequestBody Map<String, String> body) {
+        String status = body.get("status");
+
+        // 상태가 올바른지 확인
+        ReservationStatus reservationStatus;
+        try {
+            reservationStatus = ReservationStatus.valueOf(status.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            // 상태가 유효하지 않으면 400 Bad Request 반환
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", "유효하지 않은 상태입니다. 'APPROVED' 또는 'REJECTED'이어야 합니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        }
+
+        try {
+            // 예약 상태 변경
+            Reservation updatedReservation = reservationService.updateReservationStatus(reservationId, reservationStatus);
+            return ResponseEntity.ok(updatedReservation);
+        } catch (IllegalArgumentException e) {
+            // 예약이 존재하지 않을 경우
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
     }
 }
