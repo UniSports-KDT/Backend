@@ -2,12 +2,17 @@ package com.ac.su.facility;
 
 import com.ac.su.facilityImage.FacilityImage;
 import com.ac.su.reservation.Reservation;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.UpdateTimestamp;
 import java.util.List;
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@Setter
 public class Facility {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,9 +27,11 @@ public class Facility {
     @UpdateTimestamp
     private LocalDateTime updatedAt; // 수정 날짜
 
+    @JsonIgnore
     @OneToMany(mappedBy = "facility")
     private List<Reservation> reservations;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "facility")
     private List<FacilityImage> images;
 }

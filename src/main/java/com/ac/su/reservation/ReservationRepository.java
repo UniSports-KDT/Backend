@@ -7,12 +7,16 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Optional;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
 
+    Optional<Reservation> findByDateAndStartTimeAndEndTime(LocalDate date, LocalTime startTime, LocalTime endTime);
+
+
     /**
-     * 주어진 시설과 날짜, 시간 범위 내에 승인된 예약이 존재하는지 확인하는 메서드입니다.
+     * 주어진 시설과 날짜, 시간 범위 내에 승인된 예약이 존재하는지 확인하는 메서드임.
      * @param facilityId 조회할 시설의 ID
      * @param status 예약 상태 (예: "approved")
      * @param date 예약이 이루어진 날짜
