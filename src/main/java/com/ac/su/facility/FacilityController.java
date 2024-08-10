@@ -1,5 +1,6 @@
 package com.ac.su.facility;
 
+import com.ac.su.post.Post;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -71,5 +73,12 @@ public class FacilityController {
         Map<String, String> response = new HashMap<>();
         response.put("message", "삭제 성공적으로 완료됨!");
         return ResponseEntity.ok(response);
+    }
+
+    // 전체 시설을 조회
+    @GetMapping("/api/facilities")
+    public ResponseEntity<List<Facility>> getAllAnnouncements() {
+        List<Facility> facilities = facilityService.getAllFacilities();
+        return ResponseEntity.ok(facilities);
     }
 }

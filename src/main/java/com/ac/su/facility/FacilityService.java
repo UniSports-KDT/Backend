@@ -2,6 +2,7 @@ package com.ac.su.facility;
 
 import com.ac.su.facilityImage.FacilityImage;
 import com.ac.su.facilityImage.FacilityImageRepository;
+import com.ac.su.post.Post;
 import com.ac.su.reservation.ReservationRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class FacilityService {
@@ -137,5 +139,30 @@ public class FacilityService {
 
         // 4. 시설 자체를 삭제
         facilityRepository.delete(facility);
+    }
+
+    // 전체 시설 조회하는 메서드
+    public List<Facility> getAllFacilities() {
+        // 1. Facility 객체를 데이터베이스에서 조회
+        List<Facility> facilities = facilityRepository.findAll();
+
+        // 2. attachmentFlag가 Y이면, 해당 시설의 이미지 URL을 가져와 Facility 객체에 추가
+        for (Facility facility : facilities) {
+            if (facility.getAttachmentFlag() == AttachmentFlag.Y) { // Enum 비교
+                // 해당 시설의 이미지 URL을 가져옴
+                List<FacilityImage> facilityImages = facilityImageRepository.findByFacilityId(facility.getId());
+
+                // 이미지 URL만 추출해서 리스트에 추가
+                List<String> imageUrls = facilityImages.stream()
+                        .map(FacilityImage::getImageUrl)
+                        .collect(Collectors.toList());
+
+                // Facility 객체에 이미지 URL 리스트를 추가
+                facility.setImageUrls(imageUrls);
+            }
+        }
+
+        // 3. 최종적으로 생성된 Facility 객체 리스트를 반환
+        return facilities;
     }
 }

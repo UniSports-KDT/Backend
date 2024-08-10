@@ -40,4 +40,7 @@ public class Facility {
     @JsonIgnore
     @OneToMany(mappedBy = "facility")
     private List<FacilityImage> images;
+
+    @Transient  // 데이터베이스에 저장되지 않음. 이미지 URL을 임시로 저장하고, 데이터베이스와 상관없이 비즈니스 로직에서 활용
+    private List<String> imageUrls; // 이미지 URL 목록
 }
