@@ -3,15 +3,19 @@ package com.ac.su.reservation;
 import com.ac.su.facility.Facility;
 import com.ac.su.user.User;
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+
 @Entity
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private LocalDateTime date; // "2024-08-07"
-    private LocalDateTime startTime; // "09:00"
-    private LocalDateTime endTime; // "11:00"
+    private LocalDate date; // "2024-08-07"
+    private LocalTime startTime; // "09:00"
+    private LocalTime endTime; // "11:00"
     @Enumerated(EnumType.STRING)
     private ReservationStatus status; // e.g., PENDING, APPROVED, REJECTED
 
