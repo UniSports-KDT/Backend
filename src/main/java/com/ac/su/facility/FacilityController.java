@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -59,5 +60,17 @@ public class FacilityController {
         Facility updatedFacility = facilityService.updateFacility(facilityId, facilityDTO);
         // 수정된 시설 객체를 포함한 HTTP 응답 반환
         return ResponseEntity.ok(updatedFacility);
+    }
+
+    // 시설 삭제
+    @DeleteMapping("/api/facilities/{facilityId}")
+    public ResponseEntity<Map<String, String>> deleteFacility(@PathVariable Long facilityId) {
+        // deleteFacility 메서드를 호출하여 시설 삭제
+        facilityService.deleteFacility(facilityId);
+        // 성공적으로 삭제되었음을 나타내는 HTTP 응답 반환
+        // JSON 형식으로 메시지 반환
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "삭제 성공적으로 완료됨!");
+        return ResponseEntity.ok(response);
     }
 }

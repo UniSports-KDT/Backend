@@ -121,4 +121,21 @@ public class FacilityService {
         // 4. 수정된 Facility 객체를 저장하고 반환
         return facilityRepository.save(facility);
     }
+
+    // 시설을 삭제하는 메서드
+    @Transactional
+    public void deleteFacility(Long facilityId) {
+        // 1. 주어진 시설 ID로 시설이 존재하는지 확인
+        Facility facility = facilityRepository.findById(facilityId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 ID의 시설을 찾을 수 없습니다."));
+
+        // 2. 해당 시설의 이미지를 모두 삭제
+        facilityImageRepository.deleteByFacilityId(facilityId);
+
+        // 3. 해당 시설과 관련된 예약을 모두 삭제
+        reservationRepository.deleteByFacilityId(facilityId);
+
+        // 4. 시설 자체를 삭제
+        facilityRepository.delete(facility);
+    }
 }
