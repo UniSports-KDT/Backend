@@ -23,6 +23,10 @@ public class Facility {
     private String location; //시설 위치
     private String operatingHours; // 운영시간 예: "06:00-22:00"
     private Double fee;
+
+    @Enumerated(EnumType.STRING)
+    private AttachmentFlag attachmentFlag; //시설 사진 여부
+
     private LocalDateTime createdAt; // 생성 날짜
     @UpdateTimestamp
     private LocalDateTime updatedAt; // 수정 날짜

@@ -32,7 +32,7 @@ public class ReservationController {
             // JSON 형식으로 메시지 반환
             Map<String, String> response = new HashMap<>();
             response.put("message", "예약이 성공적으로 완료됨!");
-            return ResponseEntity.ok(response); //
+            return ResponseEntity.ok(response);
         } catch (IllegalArgumentException e) {
             // 에러 메시지를 JSON 형식으로 반환
             Map<String, String> errorResponse = new HashMap<>();
@@ -60,7 +60,10 @@ public class ReservationController {
         try {
             // 예약 상태 변경
             Reservation updatedReservation = reservationService.updateReservationStatus(reservationId, reservationStatus);
-            return ResponseEntity.ok(updatedReservation);
+            // JSON 형식으로 메시지 반환
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "예약 상태(status)가 성공적으로 변경됨!");
+            return ResponseEntity.ok(response); //updatedReservation
         } catch (IllegalArgumentException e) {
             // 예약이 존재하지 않을 경우
             Map<String, String> errorResponse = new HashMap<>();
