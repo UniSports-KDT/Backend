@@ -12,7 +12,7 @@ public class PostController {
     @Autowired
     private PostService postService;
 
-    // 공지사항을 작성하는 API 엔드포인트
+    // 공지사항을 작성
     @PostMapping("/api/announcements")
     public ResponseEntity<Post> createAnnouncement(@RequestBody PostDTO postDTO) {
         // 공지사항을 작성합니다.
@@ -25,5 +25,18 @@ public class PostController {
 
         // 작성된 공지사항을 반환합니다.
         return ResponseEntity.ok(post);
+    }
+
+    // 공지사항을 수정
+    @PutMapping("/api/announcements/{announcementId}")
+    public ResponseEntity<Post> updateAnnouncement(
+            @PathVariable Long announcementId,
+            @RequestBody PostDTO postDTO) {
+
+        // 공지사항을 수정.
+        Post updatedPost = postService.updatePost(announcementId, postDTO.getTitle(), postDTO.getContent());
+
+        // 수정된 공지사항을 반환.
+        return ResponseEntity.ok(updatedPost);
     }
 }
