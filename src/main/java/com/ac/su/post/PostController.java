@@ -55,7 +55,7 @@ public class PostController {
     }
 
     // 전체 공지사항을 조회
-    @GetMapping
+    @GetMapping("/api/announcements")
     public ResponseEntity<List<Post>> getAllAnnouncements() {
         List<Post> posts = postService.getAllPosts();
         return ResponseEntity.ok(posts);

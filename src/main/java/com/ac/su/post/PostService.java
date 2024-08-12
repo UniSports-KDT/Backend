@@ -1,7 +1,7 @@
 package com.ac.su.post;
 
 import com.ac.su.admin.Admin;
-import com.ac.su.admin.AdminRepository;
+//import com.ac.su.admin.AdminRepository;
 import com.ac.su.user.User;
 import com.ac.su.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +15,8 @@ public class PostService {
     @Autowired
     private PostRepository postRepository;
 
-    @Autowired
-    private AdminRepository adminRepository;
+//    @Autowired
+//    private AdminRepository adminRepository;
 
     @Autowired
     private UserRepository userRepository;
