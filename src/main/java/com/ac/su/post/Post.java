@@ -1,6 +1,7 @@
 package com.ac.su.post;
 
 import com.ac.su.admin.Admin;
+import com.ac.su.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,7 +25,11 @@ public class Post {
     @UpdateTimestamp
     private LocalDateTime updatedAt; // 수정 날짜
 
+//    @ManyToOne
+//    @JoinColumn(name = "admin_id")
+//    private Admin admin;
+
     @ManyToOne
-    @JoinColumn(name = "admin_id")
-    private Admin admin;
+    @JoinColumn(name = "user_id")
+    private User user;
 }

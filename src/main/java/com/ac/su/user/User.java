@@ -1,9 +1,6 @@
 package com.ac.su.user;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,5 +19,6 @@ public class User {
     private String phone; // 휴대폰 번호
     //24.08.12 추가 컬럼
     private String username; //로그인 아이디
-    private UserRole userRole; // GENERAL, ADMIN
+    @Enumerated(EnumType.STRING)
+    private UserRole userRole; // e.g. GENERAL, ADMIN
 }
