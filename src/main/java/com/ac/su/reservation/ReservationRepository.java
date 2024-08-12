@@ -32,5 +32,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
             @Param("startTime") LocalTime startTime,
             @Param("endTime") LocalTime endTime
     );
+    // 특정 시설에 대한 모든 예약을 삭제하는 메서드
+    void deleteByFacilityId(Long facilityId);
 }
 

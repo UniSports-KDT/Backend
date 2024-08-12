@@ -14,7 +14,7 @@ public class FacilityImage {
     private Long id;
 
     private String imageUrl; //이미지 URL
-    private String description; //이미지 설명 ex> 체육관1
+//    private String description; //이미지 설명 ex> 체육관1
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
