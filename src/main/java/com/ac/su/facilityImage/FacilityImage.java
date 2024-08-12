@@ -2,8 +2,12 @@ package com.ac.su.facilityImage;
 
 import com.ac.su.facility.Facility;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 public class FacilityImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
