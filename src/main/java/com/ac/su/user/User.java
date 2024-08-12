@@ -15,9 +15,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-    private String department;
-    private String studentId;
-    private String password;
-    private String phone;
+    private String name; //이름
+    private String department; //학과 admin은 null값으로 유지
+    private String studentId; //학번 admin은 null값으로 유지
+    private String password; // 비밀번호
+    private String phone; // 휴대폰 번호
+    //24.08.12 추가 컬럼
+    private String username; //로그인 아이디
+    private UserRole userRole; // GENERAL, ADMIN
 }
