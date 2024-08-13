@@ -28,13 +28,13 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
-    //회원가입
-    @PostMapping("/register")
+    //회원가입 api
+    @PostMapping("api/auth/register")
     public User register(@RequestBody User user) {
         return userService.registerUser(user.getName(), user.getUsername(), user.getPassword(), user.getPhone(), user.getUserRole());
     }
-    //로그인
-    @PostMapping("/login")
+    //로그인 api
+    @PostMapping("api/auth/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) throws Exception {
         try {
             authenticationManager.authenticate(

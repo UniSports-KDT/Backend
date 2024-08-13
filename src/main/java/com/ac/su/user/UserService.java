@@ -19,7 +19,7 @@ public class UserService implements UserDetailsService {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
-
+    //회원가입
     public User registerUser(String name, String username, String password, String phone, UserRole userRole) {
         String encodedPassword = passwordEncoder.encode(password);
         User user = new User();
@@ -34,7 +34,7 @@ public class UserService implements UserDetailsService {
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
-
+    //로그인
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
