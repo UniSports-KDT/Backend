@@ -20,7 +20,8 @@ public class Admin {
     private String password; //비밀번호
     private String phone; //폰 번호
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "admin")
-    private List<Post> post; //작성한 공지사항 모음
+//    //24.08.12 admin 엔티티 삭제하기로함
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "admin")
+//    private List<Post> post; //작성한 공지사항 모음
 }
