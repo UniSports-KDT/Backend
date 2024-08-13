@@ -27,6 +27,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
+
     // JWT 토큰을 검증하고 사용자 인증 정보를 SecurityContext에 설정
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
@@ -42,9 +43,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             try {
                 username = jwtTokenUtil.extractUsername(jwt);
             } catch (ExpiredJwtException e) {
-                System.out.println("JWT Token has expired");
+                System.out.println("JWT 토큰이 만료되었습니다");
             } catch (Exception e) {
-                System.out.println("Error extracting username from JWT Token");
+                System.out.println("JWT 토큰에서 사용자 이름을 추출할 수 없습니다");
             }
         }
         // JWT 토큰 유효성 검사
