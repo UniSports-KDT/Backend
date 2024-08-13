@@ -28,12 +28,12 @@ public class User implements UserDetails {
     //24.08.12 추가 컬럼
     @Column(nullable = false)
     private String username; //로그인 아이디
-
-    private UserRole userRole; // GENERAL, ADMIN
+  
+    @Enumerated(EnumType.STRING)
+    private UserRole userRole; // e.g. GENERAL, ADMIN
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(userRole);
     }
-
 }
