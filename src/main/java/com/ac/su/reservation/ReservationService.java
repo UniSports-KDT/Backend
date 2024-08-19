@@ -71,8 +71,7 @@ public class ReservationService {
         Reservation reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new IllegalArgumentException("예약이 존재하지 않습니다."));
 
-        // 예약 상태를 취소로 변경(거절로 변경해도 되는지 확인 필요)
-        reservation.setStatus(ReservationStatus.REJECTED);
+        reservation.setStatus(ReservationStatus.CANCELED);
         reservationRepository.save(reservation);
     }
 }
