@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -34,5 +35,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     );
     // 특정 시설에 대한 모든 예약을 삭제하는 메서드
     void deleteByFacilityId(Long facilityId);
+    // 특정 사용자의 모든 예약을 조회하는 메서드
+    List<Reservation> findByUserId(Long userId);
 }
 

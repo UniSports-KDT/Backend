@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -16,6 +17,8 @@ public class ReservationController {
     private ReservationService reservationService;
     @Autowired
     private ReservationRepository reservationRepository;
+
+
 
     // 예약 신청
     @PostMapping("/api/reservations")
@@ -68,6 +71,21 @@ public class ReservationController {
             // 예약이 존재하지 않을 경우
             Map<String, String> errorResponse = new HashMap<>();
             errorResponse.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        }
+
+    }
+    // userId 로 예약 조회
+    @GetMapping("/api/users/{userId}/reservations")
+    public ResponseEntity<?> getReservationsByUserId(@PathVariable Long userId) {
+        List<Reservation> reservations = reservationRepository.findByUserId(userId);
+        // 예약이 존재할 경우
+        if (!reservations.isEmpty()) {
+            return ResponseEntity.ok(reservations);
+        } else {
+            // 예약이 존재하지 않을 경우
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", "예약이 존재하지 않습니다.");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
     }
