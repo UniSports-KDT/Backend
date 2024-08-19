@@ -66,4 +66,13 @@ public class ReservationService {
         // 변경된 예약 저장
         return reservationRepository.save(reservation);
     }
+    // 예약 취소
+    public void cancelReservation(Long reservationId) {
+        Reservation reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new IllegalArgumentException("예약이 존재하지 않습니다."));
+
+        // 예약 상태를 취소로 변경(거절로 변경해도 되는지 확인 필요)
+        reservation.setStatus(ReservationStatus.REJECTED);
+        reservationRepository.save(reservation);
+    }
 }

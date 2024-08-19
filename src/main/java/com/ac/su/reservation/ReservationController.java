@@ -18,8 +18,6 @@ public class ReservationController {
     @Autowired
     private ReservationRepository reservationRepository;
 
-
-
     // 예약 신청
     @PostMapping("/api/reservations")
     public ResponseEntity<?> createReservation(@RequestBody ReservationDTO reservationDTO) {
@@ -86,6 +84,22 @@ public class ReservationController {
             // 예약이 존재하지 않을 경우
             Map<String, String> errorResponse = new HashMap<>();
             errorResponse.put("error", "예약이 존재하지 않습니다.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        }
+    }
+    // 예약 취소
+    @DeleteMapping("/api/reservations/{reservationId}")
+    public ResponseEntity<?> cancelReservation(@PathVariable Long reservationId) {
+        try {
+            // 예약 취소
+            reservationService.cancelReservation(reservationId);
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "예약이 취소되었습니다.");
+            return ResponseEntity.ok(response);
+        } catch (IllegalArgumentException e) {
+            // 예약이 존재하지 않거나 이미 취소된 경우
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
     }
