@@ -15,14 +15,12 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
-
-    @Autowired
     @Lazy
+    @Autowired
     private UserDetailsService userDetailsService;
 
     @Autowired
