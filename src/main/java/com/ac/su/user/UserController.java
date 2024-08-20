@@ -17,7 +17,10 @@ public class UserController {
     }
 
     @GetMapping("/api/users/{userId}")
-    public ResponseEntity<User> getUserById(@PathVariable Long userId) {
+    public ResponseEntity<User> getUserById(
+            @PathVariable("userId") Long userId
+//            @PathVariable String userId
+    ) {
         Optional<User> user = userService.getUserById(userId);
         return user.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());

@@ -75,7 +75,7 @@ public class ReservationController {
     }
     // userId 로 예약 조회
     @GetMapping("/api/users/{userId}/reservations")
-    public ResponseEntity<?> getReservationsByUserId(@PathVariable Long userId) {
+    public ResponseEntity<?> getReservationsByUserId(@PathVariable("userId")  Long userId) {
         List<Reservation> reservations = reservationRepository.findByUserId(userId);
         // 예약이 존재할 경우
         if (!reservations.isEmpty()) {

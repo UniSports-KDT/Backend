@@ -84,7 +84,7 @@ public class FacilityController {
 
     // 특정 시설 상세 조회
     @GetMapping("/api/facilities/{facilityId}")
-    public ResponseEntity<Facility> getFacilityById(@PathVariable Long facilityId) {
+    public ResponseEntity<Facility> getFacilityById(@PathVariable("facilityId") Long facilityId) {
         Facility facility = facilityService.getFacilityById(facilityId);
         return ResponseEntity.ok(facility);
     }

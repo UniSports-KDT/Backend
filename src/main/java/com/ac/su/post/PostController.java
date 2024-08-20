@@ -15,7 +15,9 @@ public class PostController {
 
     // 공지사항을 작성
     @PostMapping("/api/announcements")
-    public ResponseEntity<Post> createAnnouncement(@RequestBody PostDTO postDTO) {
+    public ResponseEntity<Post> createAnnouncement(
+            @RequestBody PostDTO postDTO
+    ) {
         // 공지사항을 작성합니다.
         Post post = postService.createPost(postDTO.getAdminId(), postDTO.getTitle(), postDTO.getContent());
 

@@ -66,6 +66,7 @@ public class ReservationService {
         // 변경된 예약 저장
         return reservationRepository.save(reservation);
     }
+
     // 예약 취소
     public void cancelReservation(Long reservationId) {
         Reservation reservation = reservationRepository.findById(reservationId)

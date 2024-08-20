@@ -1,6 +1,7 @@
 package com.ac.su.user;
 
 import com.ac.su.user.UserService;
+import io.jsonwebtoken.MalformedJwtException;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +17,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.security.SignatureException;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
@@ -41,9 +43,11 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             try {
                 username = jwtTokenUtil.extractUsername(jwt);
             } catch (ExpiredJwtException e) {
-                System.out.println("JWT 토큰이 만료되었습니다");
-            } catch (Exception e) {
-                System.out.println("JWT 토큰에서 사용자 이름을 추출할 수 없습니다");
+                System.out.println("JWT 토큰이 만료되었습니다: " + e.getMessage());
+            } catch (MalformedJwtException e) {
+                System.out.println("JWT 토큰이 손상되었습니다: " + e.getMessage());
+            } catch (IllegalArgumentException e) {
+                System.out.println("JWT 토큰의 클레임이 잘못되었습니다: " + e.getMessage());
             }
         }
         // JWT 토큰 유효성 검사

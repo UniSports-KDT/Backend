@@ -43,11 +43,23 @@ dependencies {
     runtimeOnly 'com.mysql:mysql-connector-j'
     implementation 'javax.servlet:javax.servlet-api:4.0.1'
 
+    // Redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
     // Test dependencies
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation 'it.ozimov:embedded-redis:0.7.2'
+}
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs << "-parameters"
+}
+
+test {
+    useJUnitPlatform() // JUnit 5 플랫폼 사용
 }
 
 tasks.named('test') {
     useJUnitPlatform()
 }
+
