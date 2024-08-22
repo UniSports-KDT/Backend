@@ -3,9 +3,11 @@ package com.ac.su.reservation;
 import com.ac.su.facility.Facility;
 import com.ac.su.facility.FacilityService;
 import com.ac.su.user.User;
+import org.hibernate.query.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Pageable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -70,8 +72,8 @@ public class ReservationService {
     public void cancelReservation(Long reservationId) {
         Reservation reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new IllegalArgumentException("예약이 존재하지 않습니다."));
-
         reservation.setStatus(ReservationStatus.CANCELED);
         reservationRepository.save(reservation);
     }
+
 }

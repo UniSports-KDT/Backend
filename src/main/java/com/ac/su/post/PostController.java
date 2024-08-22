@@ -57,6 +57,7 @@ public class PostController {
     // 전체 공지사항을 조회
     @GetMapping("/api/announcements")
     public ResponseEntity<List<Post>> getAllAnnouncements() {
+        System.out.println("공지사항 불러오기 시작");
         List<Post> posts = postService.getAllPosts();
         return ResponseEntity.ok(posts);
     }

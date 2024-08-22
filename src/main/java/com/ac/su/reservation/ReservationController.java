@@ -44,7 +44,7 @@ public class ReservationController {
 
     // 예약 상태 변경(예약 승인 및 거절)
     @PutMapping("/api/reservations/{reservationId}/status")
-    public ResponseEntity<?> updateReservationStatus(@PathVariable Long reservationId, @RequestBody Map<String, String> body) {
+    public ResponseEntity<?> updateReservationStatus(@PathVariable("reservationId") Long reservationId, @RequestBody Map<String, String> body) {
         String status = body.get("status");
 
         // 상태가 올바른지 확인
@@ -71,11 +71,10 @@ public class ReservationController {
             errorResponse.put("error", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
-
     }
     // userId 로 예약 조회
     @GetMapping("/api/users/{userId}/reservations")
-    public ResponseEntity<?> getReservationsByUserId(@PathVariable Long userId) {
+    public ResponseEntity<?> getReservationsByUserId(@PathVariable("userId") Long userId) {
         List<Reservation> reservations = reservationRepository.findByUserId(userId);
         // 예약이 존재할 경우
         if (!reservations.isEmpty()) {
@@ -89,7 +88,7 @@ public class ReservationController {
     }
     // 예약 취소
     @DeleteMapping("/api/reservations/{reservationId}")
-    public ResponseEntity<?> cancelReservation(@PathVariable Long reservationId) {
+    public ResponseEntity<?> cancelReservation(@PathVariable("reservationId") Long reservationId) {
         try {
             // 예약 취소
             reservationService.cancelReservation(reservationId);
@@ -100,6 +99,20 @@ public class ReservationController {
             // 예약이 존재하지 않거나 이미 취소된 경우
             Map<String, String> errorResponse = new HashMap<>();
             errorResponse.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        }
+    }
+    // 전체 예약 조회
+    @GetMapping("/api/reservations")
+    public ResponseEntity<?> getAllReservations() {
+        List<Reservation> reservations = reservationRepository.findAll();
+        // 예약이 존재할 경우
+        if (!reservations.isEmpty()) {
+            return ResponseEntity.ok(reservations);
+        } else {
+            // 예약이 존재하지 않을 경우
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", "예약이 존재하지 않습니다.");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
     }

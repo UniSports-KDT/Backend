@@ -29,7 +29,7 @@ public class AuthController {
     private UserService userService;
 
     //회원가입 api
-    @PostMapping("/api/auth//register")
+    @PostMapping("/api/auth/register")
     public User register(@RequestBody User user) {
         return userService.registerUser(user.getName(), user.getUsername(), user.getPassword(), user.getPhone(), user.getUserRole());
     }
