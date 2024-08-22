@@ -37,5 +37,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     void deleteByFacilityId(Long facilityId);
     // 특정 사용자의 모든 예약을 조회하는 메서드
     List<Reservation> findByUserId(Long userId);
+
+    List<Reservation> findByFacilityId(Long facilityId);
 }
 

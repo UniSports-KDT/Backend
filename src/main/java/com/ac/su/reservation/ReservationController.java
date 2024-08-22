@@ -116,4 +116,19 @@ public class ReservationController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
     }
+    // 시설별 예약 조회
+    @GetMapping("/api/facilities/{facilityId}/reservations")
+    public ResponseEntity<?> getReservationsByFacilityId(@PathVariable("facilityId") Long facilityId) {
+        List<Reservation> reservations = reservationRepository.findByFacilityId(facilityId);
+        // 예약이 존재할 경우
+        if (!reservations.isEmpty()) {
+            return ResponseEntity.ok(reservations);
+        } else {
+            // 예약이 존재하지 않을 경우
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", "예약이 존재하지 않습니다.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        }
+    }
+
 }
