@@ -28,7 +28,6 @@ public class User implements UserDetails {
     //24.08.12 추가 컬럼
     @Column(nullable = false)
     private String username; //로그인 아이디
-  
     @Enumerated(EnumType.STRING)
     private UserRole userRole; // e.g. GENERAL, ADMIN
 

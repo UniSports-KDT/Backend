@@ -29,13 +29,13 @@ public class AuthController {
     private UserService userService;
 
     //회원가입 api
-    @PostMapping("api/auth/register")
+    @PostMapping("/api/auth/register")
     public User register(@RequestBody User user) {
         return userService.registerUser(user.getName(), user.getUsername(), user.getPassword(), user.getPhone(), user.getUserRole());
     }
     //로그인 api
-    @PostMapping("api/auth/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) throws Exception {
+    @PostMapping("/api/auth/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
@@ -50,6 +50,7 @@ public class AuthController {
 
         return ResponseEntity.ok(new JwtResponse(jwt));
     }
+    @Getter
     public static class JwtResponse {
         private final String token;
 
@@ -57,9 +58,6 @@ public class AuthController {
             this.token = token;
         }
 
-        public String getToken() {
-            return token;
-        }
     }
 }
 

@@ -56,8 +56,8 @@ public class FacilityController {
     }
 
     // 시설 수정
-    @PutMapping("/api/facilities/{facilityId}")
-    public ResponseEntity<Facility> updateFacility(@PathVariable Long facilityId, @RequestBody FacilityDTO facilityDTO) {
+    @PutMapping("/api/admin/facilities/{facilityId}")
+    public ResponseEntity<Facility> updateFacility(@PathVariable("facilityId") Long facilityId, @RequestBody FacilityDTO facilityDTO) {
         // 서비스 클래스의 updateFacility 메서드를 호출하여 시설 정보 수정
         Facility updatedFacility = facilityService.updateFacility(facilityId, facilityDTO);
         // 수정된 시설 객체를 포함한 HTTP 응답 반환
@@ -66,7 +66,7 @@ public class FacilityController {
 
     // 시설 삭제
     @DeleteMapping("/api/facilities/{facilityId}")
-    public ResponseEntity<Map<String, String>> deleteFacility(@PathVariable Long facilityId) {
+    public ResponseEntity<Map<String, String>> deleteFacility(@PathVariable("facilityId") Long facilityId) {
         // deleteFacility 메서드를 호출하여 시설 삭제
         facilityService.deleteFacility(facilityId);
         // JSON 형식으로 메시지 반환
@@ -84,7 +84,7 @@ public class FacilityController {
 
     // 특정 시설 상세 조회
     @GetMapping("/api/facilities/{facilityId}")
-    public ResponseEntity<Facility> getFacilityById(@PathVariable Long facilityId) {
+    public ResponseEntity<Facility> getFacilityById(@PathVariable("facilityId") Long facilityId) {
         Facility facility = facilityService.getFacilityById(facilityId);
         return ResponseEntity.ok(facility);
     }
