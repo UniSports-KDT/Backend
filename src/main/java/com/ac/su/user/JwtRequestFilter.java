@@ -21,6 +21,7 @@ import java.util.Base64;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
+
     @Lazy
     @Autowired
     private UserDetailsService userDetailsService;
@@ -28,7 +29,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
-    // JWT 토큰을 검증하고 사용자 인증 정보를 SecurityContext에 설정
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
@@ -37,6 +37,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         String username = null;
         String jwt = null;
+
+        // 로그인, 회원가입은 JWT 검증을 건너뜀
+        String requestURI = request.getRequestURI();
+        if (requestURI.equals("/api/auth/login") || requestURI.equals("/api/auth/register")) {
+            chain.doFilter(request, response);
+            return;
+        }
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             jwt = authorizationHeader.substring(7);
@@ -54,27 +61,28 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 } catch (MalformedJwtException e) {
                     System.out.println("JWT 토큰이 올바른 형식이 아닙니다: " + e.getMessage());
                 } catch (IllegalArgumentException e) {
-                    System.out.println("JWT 토큰이 잘못되었습니다: " + e.getMessage());
-                } catch (Exception e) {
                     System.out.println("JWT 토큰에서 사용자 이름을 추출할 수 없습니다: " + e.getMessage());
                 }
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                System.out.println("JWT 처리 중 예외 발생: " + e.getMessage());
             }
-            // JWT 토큰 유효성 검사
-            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-
-                if (jwtTokenUtil.validateToken(jwt, userDetails)) {
-
-                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-                            userDetails, null, userDetails.getAuthorities());
-                    usernamePasswordAuthenticationToken
-                            .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-                }
-            }
-            chain.doFilter(request, response);
         }
+
+        // JWT 토큰 유효성 검사
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+
+            if (jwtTokenUtil.validateToken(jwt, userDetails)) {
+
+                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.getAuthorities());
+                usernamePasswordAuthenticationToken
+                        .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+            }
+        }
+
+        // 최종적으로 필터 체인을 진행
+        chain.doFilter(request, response);
     }
 }

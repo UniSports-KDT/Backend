@@ -31,7 +31,7 @@ public class PostController {
     // 공지사항을 수정
     @PutMapping("/api/announcements/{announcementId}")
     public ResponseEntity<Post> updateAnnouncement(
-            @PathVariable Long announcementId,
+            @PathVariable("announcementId") Long announcementId,
             @RequestBody PostDTO postDTO) {
 
         // 공지사항을 수정.
@@ -43,7 +43,7 @@ public class PostController {
 
     // 공지사항 삭제
     @DeleteMapping("/api/announcements/{announcementId}")
-    public ResponseEntity<?> deleteAnnouncement(@PathVariable Long announcementId) {
+    public ResponseEntity<?> deleteAnnouncement(@PathVariable("announcementId") Long announcementId) {
 
         // 공지사항을 삭제!!!
         postService.deletePost(announcementId);

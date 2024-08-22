@@ -19,7 +19,7 @@ public class Reservation {
     private LocalTime startTime; // "09:00"
     private LocalTime endTime; // "11:00"
     @Enumerated(EnumType.STRING)
-    private ReservationStatus status; // e.g., PENDING, APPROVED, REJECTED
+    private ReservationStatus status; // e.g., PENDING, APPROVED, REJECTED, CANCELED
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
