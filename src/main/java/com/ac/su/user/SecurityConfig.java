@@ -46,13 +46,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/api/auth/login",
-                                "/api/auth/register").permitAll() // 로그인, 회원가입, 공지사항 접근 허용
-                        .anyRequest().permitAll() // 나머지 모든 요청 허용
+                                "/api/auth/register").permitAll() // 로그인, 회원가입은 접근 허용
+                        .anyRequest().authenticated() // 나머지는 인증 필요
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션을 사용하지 않음
                 );
-        // JWT 필터를 UsernamePasswordAuthenticationFilter 전에 추가
+
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
