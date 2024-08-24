@@ -25,7 +25,7 @@ public class FacilityController {
         System.out.println(start);
         LocalTime end = start.plusHours(2);
         System.out.println(end);
-        return "서버 연결 성공(24.08.24 12:27)";
+        return "서버 연결 성공(24.08.25 00:00)";
     }
     // 특정 날짜의 예약 가능한 시간대 조회
     @GetMapping("/api/facilities/{facilityId}/available-times")
