@@ -38,13 +38,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String username = null;
         String jwt = null;
 
-        // 로그인, 회원가입은 JWT 검증을 건너뜀
+        // 로그인, 회원가입, 연결테스트는 JWT 검증을 건너뜀
         String requestURI = request.getRequestURI();
-        if (requestURI.equals("/api/auth/login") || requestURI.equals("/api/auth/register")) {
+        if (requestURI.equals("/api/auth/login") || requestURI.equals("/api/auth/register")|| requestURI.equals("/")) {
             chain.doFilter(request, response);
             return;
         }
-
+        // JWT 토큰 추출
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             jwt = authorizationHeader.substring(7);
 

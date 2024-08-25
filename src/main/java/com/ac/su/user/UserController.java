@@ -1,12 +1,13 @@
 package com.ac.su.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-@RestController
+@Controller
 public class UserController {
 
     private final UserService userService;
@@ -15,11 +16,11 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-
-    @GetMapping("/api/users/{userId}")
-    public ResponseEntity<User> getUserById(@PathVariable("userId") Long userId) {
+    // 유저 조회
+    @GetMapping("/users/{userId}")
+    public String getUserById(@PathVariable("userId") Long userId, Model model) {
         Optional<User> user = userService.getUserById(userId);
-        return user.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        model.addAttribute("user", user.orElse(null));
+        return "user";
     }
 }

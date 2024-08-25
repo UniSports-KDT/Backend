@@ -29,6 +29,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
     // Lombok
     compileOnly 'org.projectlombok:lombok:1.18.28'
@@ -49,6 +50,8 @@ dependencies {
 
     // Spring Security Starter (Spring Security 기능을 사용하기 위해 필요)
     implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 }
 
 tasks.named('test') {

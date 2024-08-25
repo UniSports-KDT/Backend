@@ -14,7 +14,7 @@ public class PostController {
     private PostService postService;
 
     // 공지사항을 작성
-    @PostMapping("/api/announcements")
+    @PostMapping("/api/admin/announcements")
     public ResponseEntity<Post> createAnnouncement(@RequestBody PostDTO postDTO) {
         // 공지사항을 작성합니다.
         Post post = postService.createPost(postDTO.getAdminId(), postDTO.getTitle(), postDTO.getContent());
@@ -29,7 +29,7 @@ public class PostController {
     }
 
     // 공지사항을 수정
-    @PutMapping("/api/announcements/{announcementId}")
+    @PutMapping("/api/admin/announcements/{announcementId}")
     public ResponseEntity<Post> updateAnnouncement(
             @PathVariable("announcementId") Long announcementId,
             @RequestBody PostDTO postDTO) {
@@ -42,7 +42,7 @@ public class PostController {
     }
 
     // 공지사항 삭제
-    @DeleteMapping("/api/announcements/{announcementId}")
+    @DeleteMapping("/api/admin/announcements/{announcementId}")
     public ResponseEntity<?> deleteAnnouncement(@PathVariable("announcementId") Long announcementId) {
 
         // 공지사항을 삭제!!!

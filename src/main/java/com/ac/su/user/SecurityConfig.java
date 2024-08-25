@@ -44,10 +44,14 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable()) // CSRF 비활성화
                 .authorizeHttpRequests(auth -> auth
+
                         .requestMatchers(
                                 "/api/auth/login",
-                                "/api/auth/register").permitAll() // 로그인, 회원가입은 접근 허용
+                                "/api/auth/register",
+                                "/").permitAll() // 로그인, 회원가입, 연결테스트는 접근 허용
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN") // /api/admin/** 경로는 ADMIN 권한 필요
                         .anyRequest().authenticated() // 나머지는 인증 필요
+
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션을 사용하지 않음
