@@ -1,5 +1,7 @@
 package com.ac.su.reservation;
 
+import com.ac.su.user.JwtTokenUtil;
+import com.ac.su.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,19 +15,30 @@ import java.util.Map;
 
 @RestController
 public class ReservationController {
+
     @Autowired
     private ReservationService reservationService;
+
     @Autowired
     private ReservationRepository reservationRepository;
 
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
+    private UserService userService;
+
     // 예약 신청
     @PostMapping("/api/reservations")
-    public ResponseEntity<?> createReservation(@RequestBody ReservationDTO reservationDTO) {
-        Long facilityId = reservationDTO.getFacilityId();// 시설 ID
-        Long userId = reservationDTO.getUserId();// 사용자 ID
-        LocalDate date = reservationDTO.getDate();// 예약 날짜
-        LocalTime startTime = reservationDTO.getStartTime();// 시작 시간
-        LocalTime endTime = reservationDTO.getEndTime();// 종료 시간
+    public ResponseEntity<?> createReservation(@RequestHeader("Authorization") String token, @RequestBody ReservationDTO reservationDTO) {
+        // JWT 토큰에서 userId 추출
+        String jwtToken = token.substring(7);  // "Bearer " 부분 제거
+        Long userId = jwtTokenUtil.extractUserId(jwtToken);
+
+        Long facilityId = reservationDTO.getFacilityId(); // 시설 ID
+        LocalDate date = reservationDTO.getDate(); // 예약 날짜
+        LocalTime startTime = reservationDTO.getStartTime(); // 시작 시간
+        LocalTime endTime = reservationDTO.getEndTime(); // 종료 시간
 
         try {
             // 예약 신청
@@ -64,7 +77,7 @@ public class ReservationController {
             // JSON 형식으로 메시지 반환
             Map<String, String> response = new HashMap<>();
             response.put("message", "예약 상태(status)가 성공적으로 변경됨!");
-            return ResponseEntity.ok(response); //updatedReservation
+            return ResponseEntity.ok(response); // updatedReservation
         } catch (IllegalArgumentException e) {
             // 예약이 존재하지 않을 경우
             Map<String, String> errorResponse = new HashMap<>();
@@ -72,9 +85,14 @@ public class ReservationController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
     }
-    // userId 로 예약 조회
-    @GetMapping("/api/users/{userId}/reservations")
-    public ResponseEntity<?> getReservationsByUserId(@PathVariable("userId") Long userId) {
+
+    // JWT 토큰에서 userId로 예약 조회
+    @GetMapping("/api/users/reservations")
+    public ResponseEntity<?> getReservationsByUserId(@RequestHeader("Authorization") String token) {
+        // JWT 토큰에서 userId 추출
+        String jwtToken = token.substring(7);
+        Long userId = jwtTokenUtil.extractUserId(jwtToken);
+
         List<Reservation> reservations = reservationRepository.findByUserId(userId);
         // 예약이 존재할 경우
         if (!reservations.isEmpty()) {
@@ -86,6 +104,7 @@ public class ReservationController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
     }
+
     // 예약 취소
     @DeleteMapping("/api/reservations/{reservationId}")
     public ResponseEntity<?> cancelReservation(@PathVariable("reservationId") Long reservationId) {
@@ -102,6 +121,7 @@ public class ReservationController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
     }
+
     // 전체 예약 조회
     @GetMapping("/api/reservations")
     public ResponseEntity<?> getAllReservations() {
@@ -116,6 +136,7 @@ public class ReservationController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
     }
+
     // 시설별 예약 조회
     @GetMapping("/api/facilities/{facilityId}/reservations")
     public ResponseEntity<?> getReservationsByFacilityId(@PathVariable("facilityId") Long facilityId) {

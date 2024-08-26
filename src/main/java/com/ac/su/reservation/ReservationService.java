@@ -33,7 +33,7 @@ public class ReservationService {
             System.out.println("락을 성공적으로 획득했습니다. 예약 처리를 시작합니다.");
         } else {
             // 락 획득 실패 시 예외 발생
-            throw new IllegalArgumentException("동시에 다른 사용자가 동일한 시간대에 예약을 시도 중입니다. 잠시 후 다시 시도하세요.");
+            throw new IllegalArgumentException("다른 사용자가 동일한 시간대에 예약을 시도 중입니다. 잠시 후 다시 시도하세요.");
         }
 
         try {
