@@ -15,8 +15,8 @@ public class RedisLockService {
     // 락 생성
     public boolean acquireLock(String key, long timeout) {
         String lockKey = LOCK_PREFIX + key;
-        Boolean success = redisTemplate.opsForValue().setIfAbsent(lockKey, "locked", timeout, TimeUnit.SECONDS);
-        return success != null && success;
+         Boolean success = redisTemplate.opsForValue().setIfAbsent(lockKey, "locked", timeout, TimeUnit.SECONDS);
+         return success != null && success;
     }
     // 락 해제
     public void releaseLock(String key) {

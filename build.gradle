@@ -50,7 +50,6 @@ dependencies {
 
     // Spring Security Starter (Spring Security 기능을 사용하기 위해 필요)
     implementation 'org.springframework.boot:spring-boot-starter-security'
-
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     //S3 라이브러리
     implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3:3.1.1'

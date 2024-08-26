@@ -50,6 +50,9 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/api/auth/login",
                                 "/api/auth/register",
+                                "/api/facilities",
+                                "/api/facilities/**",
+                                "/api/announcements",
                                 "/").permitAll() // 로그인, 회원가입, 연결테스트는 접근 허용
                         .requestMatchers("/api/admin/**").hasRole("ADMIN") // /api/admin/** 경로는 ADMIN 권한 필요
                         .anyRequest().authenticated() // 나머지는 인증 필요

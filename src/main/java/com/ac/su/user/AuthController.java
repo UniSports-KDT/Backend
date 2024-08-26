@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,8 +44,13 @@ public class AuthController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 오류입니다.");
         }
+
         final UserDetails userDetails = userService.loadUserByUsername(loginRequest.getUsername());
-        final String jwt = jwtTokenUtil.generateToken(userDetails);
+        final User user = userService.findByUsername(loginRequest.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("유저를 찾을 수 없습니다: " + loginRequest.getUsername()));
+
+        // userId를 얻기
+        final String jwt = jwtTokenUtil.generateToken(userDetails, user.getId());
 
         return ResponseEntity.ok(new JwtResponse(jwt));
     }
@@ -57,7 +61,6 @@ public class AuthController {
         public JwtResponse(String token) {
             this.token = token;
         }
-
     }
 }
 
