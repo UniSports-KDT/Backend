@@ -27,16 +27,17 @@ public class FacilityController {
         System.out.println(end);
         return "서버 연결 성공(24.08.25 00:00)";
     }
+
     // 특정 날짜의 예약 가능한 시간대 조회
     @GetMapping("/api/facilities/{facilityId}/available-times")
-    public Map<String, Object> getAvailableTimes(@PathVariable Long facilityId, @RequestParam String date) {
+    public Map<String, Object> getAvailableTimes(@PathVariable("facilityId") Long facilityId, @RequestParam("date") String date) {
         LocalDate localDate = LocalDate.parse(date); // 요청된 날짜를 LocalDate로 변환
         System.out.println("유저가 보낸 날짜:" + date);
         return facilityService.getAvailableTimes(facilityId, localDate); // 예약 가능한 시간대 조회
     }
 
     //시설 추가
-    @PostMapping("/api/facilities")
+    @PostMapping("/api/admin/facilities")
     public ResponseEntity<Facility> createFacility(@RequestBody FacilityDTO facilityDTO) {
 
         // 1. FacilityDTO로부터 Facility 객체 생성 및 필드 설정
@@ -65,7 +66,7 @@ public class FacilityController {
     }
 
     // 시설 삭제
-    @DeleteMapping("/api/facilities/{facilityId}")
+    @DeleteMapping("/api/admin/facilities/{facilityId}")
     public ResponseEntity<Map<String, String>> deleteFacility(@PathVariable("facilityId") Long facilityId) {
         // deleteFacility 메서드를 호출하여 시설 삭제
         facilityService.deleteFacility(facilityId);

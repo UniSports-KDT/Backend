@@ -43,7 +43,7 @@ public class ReservationController {
     }
 
     // 예약 상태 변경(예약 승인 및 거절)
-    @PutMapping("/api/reservations/{reservationId}/status")
+    @PutMapping("/api/admin/reservations/{reservationId}/status")
     public ResponseEntity<?> updateReservationStatus(@PathVariable("reservationId") Long reservationId, @RequestBody Map<String, String> body) {
         String status = body.get("status");
 
