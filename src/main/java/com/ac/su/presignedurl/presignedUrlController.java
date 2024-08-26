@@ -13,7 +13,7 @@ public class presignedUrlController {
     private final S3Service s3Service;
     @GetMapping("/presigned-url")
     @ResponseBody
-    String getURL(@RequestParam String filename){
+    String getURL(@RequestParam("filename") String filename){
         var result = s3Service.createPresignedUrl("test/" + filename);
         return result;
     }
