@@ -1,9 +1,5 @@
 package com.ac.su.user;
 
-import com.ac.su.user.JwtTokenUtil;
-import com.ac.su.user.User;
-import com.ac.su.user.UserService;
-import com.ac.su.user.UserRole;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,22 +40,25 @@ public class AuthController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 오류입니다.");
         }
-
         final UserDetails userDetails = userService.loadUserByUsername(loginRequest.getUsername());
         final User user = userService.findByUsername(loginRequest.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException("유저를 찾을 수 없습니다: " + loginRequest.getUsername()));
 
-        // userId를 얻기
+        // Generate JWT token and retrieve user role
         final String jwt = jwtTokenUtil.generateToken(userDetails, user.getId());
+        final UserRole userRole = user.getUserRole();
 
-        return ResponseEntity.ok(new JwtResponse(jwt));
+
+        return ResponseEntity.ok(new JwtResponse(jwt, userRole));
     }
     @Getter
     public static class JwtResponse {
         private final String token;
+        private final UserRole userRole;
 
-        public JwtResponse(String token) {
+        public JwtResponse(String token, UserRole userRole) {
             this.token = token;
+            this.userRole = userRole;
         }
     }
 }
