@@ -5,6 +5,7 @@ import com.ac.su.facility.FacilityService;
 import com.ac.su.redis.RedisLockService;
 import com.ac.su.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.awt.print.Pageable;
@@ -21,6 +22,8 @@ public class ReservationService {
     private FacilityService facilityService;
     @Autowired
     private RedisLockService redisLockService;
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
     private static final long LOCK_TIMEOUT = 10L; // 락 타임아웃 10초
 
     // 예약 생성
@@ -81,7 +84,8 @@ public class ReservationService {
 
         reservation.setStatus(status);
         reservationRepository.save(reservation);
-
+        // 상태 변경 후 WebSocket 메시지 전송
+        messagingTemplate.convertAndSend("/topic/status", status);
         // 변경된 예약 저장
         return reservationRepository.save(reservation);
     }
